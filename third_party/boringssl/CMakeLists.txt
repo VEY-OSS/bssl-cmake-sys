@@ -365,12 +365,14 @@ add_library(
   src/crypto/evp/evp.cc
   src/crypto/evp/evp_asn1.cc
   src/crypto/evp/evp_ctx.cc
+  src/crypto/evp/evp_kem.cc
   src/crypto/evp/p_dh.cc
   src/crypto/evp/p_dsa.cc
   src/crypto/evp/p_ec.cc
   src/crypto/evp/p_ed25519.cc
   src/crypto/evp/p_hkdf.cc
   src/crypto/evp/p_mldsa.cc
+  src/crypto/evp/p_mlkem.cc
   src/crypto/evp/p_rsa.cc
   src/crypto/evp/p_x25519.cc
   src/crypto/evp/pbkdf.cc
