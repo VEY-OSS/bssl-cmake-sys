@@ -1,11 +1,11 @@
 [package]
 name = "bssl-cmake-sys"
-version = "0.1.2602110"
+version = "0.1.2603270"
 license = "Apache-2.0"
 edition = "2024"
 rust-version = "1.87"
 description = "FFI bindings to BoringSSL (cmake incorporated)"
-repository = "https://github.com/zh-jq/bssl-cmake-sys.git"
+repository = "https://github.com/VEY-OSS/bssl-cmake-sys.git"
 readme = "README.md"
 categories = ["cryptography", "external-ffi-bindings"]
 
@@ -43,5 +43,5 @@ exclude = [
 
 [build-dependencies]
 cc = "1.0"
-bindgen = "0.72"
+bindgen = { version = "0.72", default-features = false }
 cmake = "0.1"
