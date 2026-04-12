@@ -36,6 +36,8 @@ jobs:
           sudo apt-get install libclang-dev
       - name: Cargo build
         run: cargo build
+      - name: Cargo clippy
+        run: cargo clippy --tests -- --deny warnings
   build-macOS:
     name: Build on macOS
     strategy:
@@ -53,8 +55,13 @@ jobs:
         uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ matrix.rust }}
+      - name: Install dependencies
+        run: |
+          brew install llvm
       - name: Cargo build
         run: cargo build
+      - name: Cargo clippy
+        run: cargo clippy --tests -- --deny warnings
   build-Windows:
     name: Build on Windows
     strategy:
@@ -78,18 +85,6 @@ jobs:
           toolchain: ${{ matrix.rust }}
       - name: Cargo build
         run: cargo build
-  clippy:
-    name: Clippy
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout sources
-        uses: actions/checkout@v6
-        with:
-          submodules: true
-      - name: Install stable toolchain
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          components: clippy
       - name: Cargo clippy
         run: cargo clippy --tests -- --deny warnings
 
