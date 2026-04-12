@@ -13,17 +13,37 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  build:
-    name: Build
+  build-Linux:
+    name: Build on Linux
     strategy:
       matrix:
-        os:
-          - ubuntu-latest
-          - macos-latest
         rust:
           - stable
           - beta
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v6
+        with:
+          submodules: true
+      - name: Install ${{ matrix.rust }} toolchain
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ matrix.rust }}
+      - name: Install libclang-dev
+        run: |
+          sudo apt-get update
+          sudo apt-get install libclang-dev
+      - name: Cargo build
+        run: cargo build
+  build-macOS:
+    name: Build on macOS
+    strategy:
+      matrix:
+        rust:
+          - stable
+          - beta
+    runs-on: macos-latest
     steps:
       - name: Checkout sources
         uses: actions/checkout@v6
@@ -35,8 +55,8 @@ jobs:
           toolchain: ${{ matrix.rust }}
       - name: Cargo build
         run: cargo build
-  build-win:
-    name: Build Win
+  build-Windows:
+    name: Build on Windows
     strategy:
       matrix:
         rust:
