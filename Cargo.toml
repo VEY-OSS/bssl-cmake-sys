@@ -45,3 +45,7 @@ exclude = [
 cc = "1.0"
 bindgen = { version = "0.72", default-features = false }
 cmake = "0.1"
+
+[features]
+runtime-libclang = ["bindgen/runtime"]
+static-libclang = ["bindgen/static"]
