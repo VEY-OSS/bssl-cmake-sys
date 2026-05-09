@@ -375,6 +375,7 @@ add_library(
   src/crypto/evp/p_mlkem.cc
   src/crypto/evp/p_rsa.cc
   src/crypto/evp/p_x25519.cc
+  src/crypto/evp/p_xwing.cc
   src/crypto/evp/pbkdf.cc
   src/crypto/evp/print.cc
   src/crypto/evp/scrypt.cc
