@@ -1,6 +1,6 @@
 [package]
 name = "bssl-cmake-sys"
-version = "0.1.2605260"
+version = "0.1.2605261"
 license = "Apache-2.0"
 edition = "2024"
 rust-version = "1.87"
@@ -50,3 +50,4 @@ cmake = "0.1"
 default = ["runtime-libclang"]
 runtime-libclang = ["bindgen/runtime"]
 static-libclang = ["bindgen/static"]
+no_cxx_runtime = []
