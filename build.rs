@@ -130,11 +130,16 @@ fn main() {
 fn link_cxx_runtime() {
     // libssl requires a C++ runtime, such as libstdc++ or libc++
     println!("cargo:rerun-if-changed=link_runtime.cpp");
-    cc::Build::new()
+    let mut builder = cc::Build::new();
+    builder
         .cargo_metadata(true)
         .cpp(true)
-        .file("link_runtime.cpp")
-        .compile("link_runtime");
+        .file("link_runtime.cpp");
+    let linkage = env::var("CARGO_CFG_TARGET_FEATURE").unwrap_or_default();
+    if linkage.contains("crt-static") {
+        builder.cpp_link_stdlib_static(true);
+    }
+    builder.compile("link_runtime");
 }
 
 #[cfg(target_env = "msvc")]
