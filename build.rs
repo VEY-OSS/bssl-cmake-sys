@@ -138,6 +138,12 @@ fn link_cxx_runtime() {
     let linkage = env::var("CARGO_CFG_TARGET_FEATURE").unwrap_or_default();
     if linkage.contains("crt-static") {
         builder.cpp_link_stdlib_static(true);
+        // cc doesn't static link with c++abi when build with c++
+        if let Ok(crt) = env::var("CXXSTDLIB")
+            && crt == "c++"
+        {
+            println!("cargo:rustc-link-lib=static=c++abi");
+        }
     }
     builder.compile("link_runtime");
 }
