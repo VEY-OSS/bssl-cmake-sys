@@ -1,6 +1,6 @@
 [package]
 name = "bssl-cmake-sys"
-version = "0.1.2605261"
+version = "0.1.2605262"
 license = "Apache-2.0"
 edition = "2024"
 rust-version = "1.87"
@@ -40,6 +40,7 @@ exclude = [
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+mimalloc-sys = { package = "vey-mimalloc-sys", version = "0.2", default-features = false, optional = true }
 
 [build-dependencies]
 cc = "1.0"
@@ -48,6 +49,6 @@ cmake = "0.1"
 
 [features]
 default = ["runtime-libclang"]
-runtime-libclang = ["bindgen/runtime"]
-static-libclang = ["bindgen/static"]
-no_cxx_runtime = []
+runtime-libclang = ["bindgen/runtime", "mimalloc-sys?/runtime-libclang"]
+static-libclang = ["bindgen/static", "mimalloc-sys?/static-libclang"]
+mimalloc = ["dep:mimalloc-sys"]

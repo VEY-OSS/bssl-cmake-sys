@@ -71,7 +71,7 @@ fn main() {
 
     let target = env::var("TARGET").unwrap();
 
-    #[cfg(not(any(windows, feature = "no_cxx_runtime")))]
+    #[cfg(not(windows))]
     link_cxx_runtime();
 
     // bindgen
@@ -126,7 +126,7 @@ fn main() {
     println!("cargo:conf={}", OSSL_CONF_DEFINES.join(","));
 }
 
-#[cfg(not(any(windows, feature = "no_cxx_runtime")))]
+#[cfg(not(windows))]
 fn link_cxx_runtime() {
     // libssl requires a C++ runtime, such as libstdc++ or libc++
     println!("cargo:rerun-if-changed=link_runtime.cpp");
