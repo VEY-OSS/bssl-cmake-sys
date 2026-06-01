@@ -71,9 +71,6 @@ fn main() {
 
     let target = env::var("TARGET").unwrap();
 
-    #[cfg(not(windows))]
-    link_cxx_runtime();
-
     // bindgen
     let binding = bindgen::Builder::default()
         .header("wrapper.h")
@@ -111,6 +108,9 @@ fn main() {
     cmake_config.generator("Ninja");
     #[cfg(target_env = "msvc")]
     select_msvc_crt(&mut cmake_config);
+    #[cfg(not(windows))]
+    link_cxx_runtime(&mut cmake_config);
+
     let boringssl_build_dir = cmake_config.build();
 
     let lib_search_dir = Path::new(&boringssl_build_dir).join("build");
@@ -127,7 +127,7 @@ fn main() {
 }
 
 #[cfg(not(windows))]
-fn link_cxx_runtime() {
+fn link_cxx_runtime(cmake_config: &mut cmake::Config) {
     // libssl requires a C++ runtime, such as libstdc++ or libc++
     println!("cargo:rerun-if-changed=link_runtime.cpp");
     let mut builder = cc::Build::new();
@@ -135,13 +135,15 @@ fn link_cxx_runtime() {
         .cargo_metadata(true)
         .cpp(true)
         .file("link_runtime.cpp");
-    let linkage = env::var("CARGO_CFG_TARGET_FEATURE").unwrap_or_default();
-    if linkage.contains("crt-static") {
+    let cfg_features = env::var("CARGO_CFG_TARGET_FEATURE").unwrap_or_default();
+    if cfg_features.contains("crt-static") {
         builder.cpp_link_stdlib_static(true);
-        // cc doesn't static link with c++abi when build with c++
-        if let Ok(crt) = env::var("CXXSTDLIB")
+        if cmake_config.get_profile() == "Debug"
+            && let Ok(crt) = env::var("CXXSTDLIB")
             && crt == "c++"
         {
+            // cc doesn't static link with c++abi when build with c++
+            // This is only needed when build in debug mode
             println!("cargo:rustc-link-lib=static=c++abi");
         }
     }
@@ -150,8 +152,8 @@ fn link_cxx_runtime() {
 
 #[cfg(target_env = "msvc")]
 fn select_msvc_crt(cmake_config: &mut cmake::Config) {
-    let linkage = env::var("CARGO_CFG_TARGET_FEATURE").unwrap_or_default();
-    if linkage.contains("crt-static") {
+    let cfg_features = env::var("CARGO_CFG_TARGET_FEATURE").unwrap_or_default();
+    if cfg_features.contains("crt-static") {
         cmake_config.define("CMAKE_MSVC_RUNTIME_LIBRARY", "MultiThreaded");
     } else {
         cmake_config.define("CMAKE_MSVC_RUNTIME_LIBRARY", "MultiThreadedDLL");
