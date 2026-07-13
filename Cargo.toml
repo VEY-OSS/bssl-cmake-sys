@@ -1,6 +1,6 @@
 [package]
 name = "bssl-cmake-sys"
-version = "0.1.2606160"
+version = "0.1.2607130"
 license = "Apache-2.0"
 edition = "2024"
 rust-version = "1.87"
