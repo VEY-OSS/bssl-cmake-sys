@@ -386,7 +386,6 @@ add_library(
   src/crypto/fuzzer_mode.cc
   src/crypto/hpke/hpke.cc
   src/crypto/hrss/hrss.cc
-  src/crypto/kyber/kyber.cc
   src/crypto/lhash/lhash.cc
   src/crypto/md4/md4.cc
   src/crypto/md5/md5.cc
@@ -486,6 +485,7 @@ add_library(
   src/crypto/x509/x509_def.cc
   src/crypto/x509/x509_ext.cc
   src/crypto/x509/x509_lu.cc
+  src/crypto/x509/x509_mtc.cc
   src/crypto/x509/x509_obj.cc
   src/crypto/x509/x509_req.cc
   src/crypto/x509/x509_set.cc
