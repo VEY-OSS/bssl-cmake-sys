@@ -6,6 +6,7 @@
 #![allow(clippy::missing_safety_doc)]
 #![allow(clippy::ptr_offset_with_cast)]
 #![allow(clippy::useless_transmute)]
+#![allow(clippy::manual_div_ceil)]
 
 use core::ffi::c_ulong;
 
